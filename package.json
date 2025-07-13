@@ -1,0 +1,25 @@
+{
+  "name": "discord-chess",
+  "version": "1.0.0",
+  "description": "Discord Chess",
+  "keywords": [
+    "discord",
+    "chess"
+  ],
+  "homepage": "https://github.com/sollybunny/discord-chess#readme",
+  "bugs": {
+    "url": "https://github.com/sollybunny/discord-chess/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sollybunny/discord-chess.git"
+  },
+  "license": "GPL-3.0",
+  "author": "SollyBunny",
+  "type": "module",
+  "main": "src/index.mjs",
+  "dependencies": {
+    "canvas": "^3.1.2",
+    "chess.js": "^1.4.0"
+  }
+}

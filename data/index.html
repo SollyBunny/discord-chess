@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Discord Chess</title>
+</head>
+<body>
+	<h1> Discord Chess </h1>
+	<p> To play Discord Chess, paste <p>
+	<code id="url" style="cursor: pointer" title="Click to copy"></code>
+	<p> into discord, then follow the instructions on the image </p>
+	<p> For testing you can also play it here <p>
+	<img id="img" src="./PLAY.png">
+	<p> For your convenience you can type the moves straight in and it will format them to <code>s/Y/Y[move]</code></p>
+	<label for="move"> Input: </label>
+	<input id="move" type="text" autofocus>
+	<button onclick="submit()"> Enter </button><br><br>
+	<button onclick="e_img.src = './PLAY.png'"> Reset </button>
+	<script defer>
+		const e_url = document.getElementById("url");
+		e_url.textContent = location.origin + "/PLAY.png";
+		e_url.addEventListener("click", () => navigator.clipboard.writeText(e_url.textContent));
+		const e_img = document.getElementById("img");
+		const e_move = document.getElementById("move");
+		function submit() {
+			const match = e_move.value.match(/^s\/(.+?)\/(.+)$/);
+			if (match)
+				e_img.src = e_img.src.replace(match[1], match[2]);
+			else
+				e_img.src = e_img.src.replace("Y", "Y" + e_move.value);
+			e_move.value = "";
+		}
+		e_move.addEventListener("keydown", event => {
+			if (event.key === "Enter" || event.keyCode === 13)
+				submit();
+		});
+	</script>
+</body>
+</html>
