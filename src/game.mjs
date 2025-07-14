@@ -35,19 +35,34 @@ async function doAI(game) {
 	return;
 }
 
-export async function playGame(moves) {
-	let msg = "";
-	if(moves.length % 4 !== 0) {
-		msg = `Invalid move, try s/Y${moves.slice(0, moves.length % 4)}/Y`;
-		moves = moves.slice(moves.length % 4);
+function badMoveStr(str) {
+	if (str.length < 4)
+		return `Invalid move, try s/Y${str}/Y`;
+	if (str.length < 8)
+		return `Stop it, try s/Y${str}/Y`;
+	if (str.length < 12)
+		return `):<, try s/Y${str}/Y`;
+	if (str.length < 16)
+		return `I give up`;
+	return "";
+}
+
+export async function playGame(movesStr) {
+	let msg = undefined;
+	let moves;
+	if(movesStr.length % 4 !== 0) {
+		msg = badMoveStr(movesStr.slice(0, movesStr.length % 4));
+		moves = chunkString(movesStr.slice(movesStr.length % 4), 4).reverse();
+	} else {
+		moves = chunkString(movesStr, 4).reverse();
 	}
-	moves = chunkString(moves, 4).reverse();
 	const game = new Chess();
-	for (const move of moves) {
+	for (let i = 0; i < moves.length; ++i) {
+		const move = moves[i];
 		try {
 			game.move(move.toLowerCase(), { sloppy: true });
 		} catch (e) {
-			msg = `Invalid move, try s/Y${move}/Y`;
+			msg = badMoveStr(movesStr.slice(0, movesStr.length % 4) + moves.slice(i).reverse().join(""));
 			break;
 		}
 		await doAI(game);
@@ -71,6 +86,6 @@ export async function playGame(moves) {
 		from: game.history({ verbose: true }).at(-1)?.from ?? "-",
 		to: game.history({ verbose: true }).at(-1)?.to ?? "-",
 		check: game.inCheck() ? game.findPiece({ type: KING, color: game.turn() }).at(0) || "-" : "-",
-		msg
+		msg: msg ?? "Use s/Y/Y[move] to play, eg: s/Y/YD2D3",
 	};
 }

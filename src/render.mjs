@@ -125,7 +125,8 @@ export function renderFen({ from, to, check, fen, msg }) {
 	ctx.textBaseline = "top";
 	ctx.textAlign = "center";
 	ctx.font = `${TEXTSIZE * 0.7}px Font`;
-	ctx.fillText(msg || "Use s/Y/Y[move] to play, eg: s/Y/YD2D3", SIZE * 8 / 2, SIZE * 8, SIZE * 8);
+	if (msg)
+		ctx.fillText(msg, SIZE * 8 / 2, SIZE * 8, SIZE * 8);
 	// Return PNG stream
 	return can.createPNGStream();
 }
